@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Sign up</h2>
+    <form id="signup-form">
+      <div>
+        <input type="email" name="username" placeholder="Email">
+      </div>
+      <div>
+        <input type="password" name="password" placeholder="Password">
+      </div>
+      <div>
+        <input type="text" name="given_name" placeholder="Given name">
+      </div>
+      <div>
+        <input type="text" name="family_name" placeholder="Family name">
+      </div>
+      <input type="submit" value="Sign up">
+    </form>
+    <hr>
+    <h2>Verification</h2>
+    <form id="verification-form">
+      <div>
+        <input type="email" name="username" placeholder="Email">
+      </div>
+      <div>
+        <input type="number" name="verification_code" placeholder="Verification code">
+      </div>
+      <input type="submit" value="Verify">
+    </form>
+    <hr>
+    <h2>Login</h2>
+    <form id="login-form">
+      <div>
+        <input type="text" name="username" placeholder="Email">
+      </div>
+      <div>
+        <input type="password" name="password" placeholder="Password">
+      </div>
+      <input type="submit" value="Login">
+    </form>
+    <hr>
+    <h2>File list</h2>
+    <form id="file-list-form">
+      <input type="submit" value="Refresh">
+      <ul id="file-list"></ul>
+    </form>
+    <hr>
+    <h2>Upload file</h2>
+    <form id="file-put-form">
+      <div>
+        <label>
+          File
+          <input type="file" name="file">
+        </label>
+      </div>
+      <input type="submit" value="Upload">
+    </form>
+    <script src="app.js"></script>
+  </body>
+</html>
