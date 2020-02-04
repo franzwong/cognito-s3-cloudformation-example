@@ -24,11 +24,11 @@ aws cloudformation create-stack \
 2. Create webpack configuration
 
 ```
-cp src/webpack/sample.js src/webpack/dev.js
+cp webpack/sample.js webpack/dev.js
 export WEBPACK_CONFIG=./webpack/dev
 ```
 
-3. Modify `src/webpack/dev.js` (You can get the values by `aws cloudformation describe-stacks --stack-name MyStack`)
+3. Modify `webpack/dev.js` (You can get the values by `aws cloudformation describe-stacks --stack-name MyStack`)
 
 ## Build
 
