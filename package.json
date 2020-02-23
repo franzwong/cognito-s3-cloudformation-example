@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build:dev": "webpack --devtool source-map --mode=development && cp src/index.html dist/"
+    "build:dev": "rm -rf dist && webpack --devtool source-map --mode=development && cp src/index.html dist/",
+    "build:prod": "rm -rf dist && webpack --mode=production && cp src/index.html dist/"
   },
   "keywords": [],
   "author": "Franz Wong",
@@ -15,8 +16,8 @@
     "webpack-cli": "^3.2.1"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^3.0.7",
-    "aws-sdk": "^2.395.0",
+    "@aws-amplify/auth": "^2.1.5",
+    "aws-sdk": "^2.625.0",
     "escape-html": "^1.0.3"
   }
 }

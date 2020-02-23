@@ -1,29 +1,32 @@
-const AWS = require('aws-sdk/global')
-require('aws-sdk/clients/s3')
-const escapeHtml = require('escape-html')
+const S3 = require('aws-sdk/clients/s3');
+const Auth = require('@aws-amplify/auth').default;
 
-const getFileName = filePath => filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length)
+const escapeHtml = require('escape-html');
 
-module.exports = function(fileBucketName) {
-  return function(event) {
-    event.preventDefault()
+const getFileName = filePath => filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length);
 
-    if (!AWS.config.credentials) {
-      return alert('Please login')
-    }
+module.exports = function(region, fileBucketName) {
+  return async function(event) {
+    event.preventDefault();
 
-    const identityId = AWS.config.credentials.params.IdentityId
+    try {
+      const credentials = await Auth.currentCredentials();
 
-    const s3 = new AWS.S3()
-    const params = {
-      Bucket: fileBucketName,
-      Prefix: `${identityId}/`
-    }
-    s3.listObjects(params, (err, data) => {
-      if (err) {
-        return alert(err.message || JSON.stringify(err))
+      if (!credentials) {
+        return alert('Please login');
       }
-      const html = data.Contents
+
+      const s3 = new S3({
+        region, // Browser will complain for CORS if region is not set
+        credentials: Auth.essentialCredentials(credentials),
+      });
+      const identityId = credentials.identityId;
+      const s3Objects = await s3.listObjects({
+        Bucket: fileBucketName,
+        Prefix: `${identityId}/`,
+      }).promise();
+
+      const html = s3Objects.Contents
         .map(obj => obj.Key)
         .map(key => ({
           originalKey: key,
@@ -33,8 +36,10 @@ module.exports = function(fileBucketName) {
             Key: key,
           }),
         }))
-        .reduce((accumulator, obj) => accumulator + `<li><a href='${obj.url}'>${obj.key}</a></li>`, '')
-      document.getElementById('file-list').innerHTML = html
-    })
-  }
+        .reduce((accumulator, obj) => accumulator + `<li><a href='${obj.url}'>${obj.key}</a></li>`, '');
+      document.getElementById('file-list').innerHTML = html;
+    } catch (err) {
+      alert(err.message || JSON.stringify(err));
+    }
+  };
 }

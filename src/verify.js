@@ -1,24 +1,20 @@
-const {
-  CognitoUser
-} = require('amazon-cognito-identity-js')
+const Auth = require('@aws-amplify/auth').default;
 
-module.exports = function(userPool) {
-  return function(event) {
-    event.preventDefault()
+module.exports = function() {
+  return async function(event) {
+    event.preventDefault();
 
-    const form = event.target
-    const userName = form.elements['username'].value
-    const verificationCode = form.elements['verification_code'].value
-  
-    const cognitoUser = new CognitoUser({
-      Username : userName,
-      Pool : userPool,
-    })
-    cognitoUser.confirmRegistration(verificationCode, true, (err, result) => {
-      if (err) {
-        return alert(err.message || JSON.stringify(err))
-      }
-      alert('We\'ve verified your account')
-    })
-  }
+    const form = event.target;
+    const username = form.elements['username'].value;
+    const code = form.elements['verification_code'].value;
+    
+    try {
+      await Auth.confirmSignUp(username, code, {
+        forceAliasCreation: false,    
+      });
+      alert('You\'ve verified your account');
+    } catch (err) {
+      alert(err.message || JSON.stringify(err));
+    }
+  };
 }

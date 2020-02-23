@@ -1,31 +1,35 @@
-const AWS = require('aws-sdk/global')
-require('aws-sdk/clients/s3')
+const S3 = require('aws-sdk/clients/s3');
+const Auth = require('@aws-amplify/auth').default;
 
-module.exports = function(fileBucketName) {
-  return function(event) {
-    event.preventDefault()
+module.exports = function(region, fileBucketName) {
+  return async function(event) {
+    event.preventDefault();
 
-    if (!AWS.config.credentials) {
-      return alert('Please login')
-    }
+    try {
+      const credentials = await Auth.currentCredentials();
 
-    const identityId = AWS.config.credentials.params.IdentityId
-
-    const form = event.target
-    const file = form.elements['file'].files[0]
-
-    const s3 = new AWS.S3()
-    const params = {
-      Bucket: fileBucketName,
-      Key: `${identityId}/${file.name}`,
-      Body: file,
-      ACL: 'private'
-    }
-    s3.upload(params, (err, data) => {
-      if (err) {
-        return alert(err.message || JSON.stringify(err))
+      if (!credentials) {
+        return alert('Please login');
       }
-      alert(`File ${file.name} is uploaded`)
-    })
-  }
+
+      const s3 = new S3({
+        region, // Browser will complain for CORS if region is not set
+        credentials: Auth.essentialCredentials(credentials),
+      });
+      const identityId = credentials.identityId;
+
+      const form = event.target;
+      const file = form.elements['file'].files[0];
+
+      await s3.upload({
+        Bucket: fileBucketName,
+        Key: `${identityId}/${file.name}`,
+        Body: file,
+        ACL: 'private',
+      }).promise();
+      alert(`File ${file.name} is uploaded`);
+    } catch (err) {
+      alert(err.message || JSON.stringify(err));
+    }
+  };
 }
