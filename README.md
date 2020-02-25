@@ -4,6 +4,8 @@ This example shows how to use S3 with cognito. It includes sign up, email verifi
 
 The whole stack can be created by CloudFormation. The stack includes Cognito user pool, user pool client, identity pool, IAM role and S3 bucket.
 
+(For Amplify version, please refer to the `amplify` branch)
+
 ## Setup
 
 1. Create Stack
