@@ -1,10 +1,10 @@
 # Cognito S3 Cloudformation example
 
+(For Amplify version, please refer to the `amplify` branch)
+
 This example shows how to use S3 with cognito. It includes sign up, email verification, login, file upload, download and list S3 folder. Each cognito user can only access their own folder.
 
 The whole stack can be created by CloudFormation. The stack includes Cognito user pool, user pool client, identity pool, IAM role and S3 bucket.
-
-(For Amplify version, please refer to the `amplify` branch)
 
 ## Setup
 
