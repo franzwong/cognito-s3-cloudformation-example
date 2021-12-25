@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "amazon-cognito-identity-js": "^3.0.7",
-    "aws-sdk": "^2.395.0",
+    "aws-sdk": "^2.814.0",
     "escape-html": "^1.0.3"
   }
 }
