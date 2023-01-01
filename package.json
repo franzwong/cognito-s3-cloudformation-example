@@ -11,8 +11,8 @@
   "private": true,
   "devDependencies": {
     "json-loader": "^0.5.7",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "amazon-cognito-identity-js": "^3.0.7",
